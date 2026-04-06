@@ -1,0 +1,15 @@
+.HourlyElement {
+    display: inline-block;
+}
+
+.HourlyElementHour {
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.HourlyElementValue {
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 12px;
+}

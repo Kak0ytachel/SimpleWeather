@@ -1,0 +1,6 @@
+.DataCard {
+    display: inline-grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    margin-block: 30px;
+}
