@@ -1,0 +1,51 @@
+.CityElementTypeIcon {
+    width: 16px;
+    height: 16px;
+    /*fill: var(--text-color-secondary)*/
+    background-color: var(--text-color-secondary);
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    display: inline-block;
+    vertical-align: middle;
+    padding-right: 13px;
+}
+
+.CityElementTypeIconSearch {
+    mask-image: url(./assets/magnifying-glass-solid-full.svg);
+}
+
+.CityElementTypeIconHistory {
+    mask-image: url(./assets/clock-rotate-left-solid-full.svg);
+}
+
+.CityElementTypeIconFavourite {
+    mask-image: url(./assets/star-regular-full.svg);
+}
+
+.CityElementCity {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: left;
+}
+
+/*.CityElementBoxCity, .CityElementBoxWeather {*/
+/*    display: inline-block;*/
+/*}*/
+
+.CityElementWeather {
+    font-weight: 600;
+    color: var(--text-color-secondary);
+    font-size: 24px;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: 13px;
+}
+
+.CityElement{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

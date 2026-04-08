@@ -8,6 +8,8 @@ import DataElement from "./DataElement.jsx";
 import DataCard from "./DataCard.jsx";
 import HourlyElement from "./HourlyElement.jsx";
 import HourlyCard from "./HourlyCard.jsx";
+import CityElement from "./CityElement.jsx";
+import CityCard from "./CityCard.jsx";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -24,6 +26,7 @@ function App() {
             {/*<DataElement icon="rain" title={"Rain\nchance"} value="10%"/>*/}
             <DataCard/>
             <HourlyCard/>
+            <CityCard/>
         </div>
         <div>
           <h1>Get started</h1>

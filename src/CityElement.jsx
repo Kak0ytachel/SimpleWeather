@@ -1,25 +1,27 @@
-import search from "./assets/magnifying-glass-solid-full.svg"
-import history from "./assets/clock-rotate-left-solid-full.svg"
-import favourite from "./assets/star-regular-full.svg"
-
+import "./CityElement.css"
+import Icon from "./Icon.jsx";
 export default function CityElement({city, typeIcon, value, icon}) {
-    let typeIconSrc = (() => {
+    let iconTypeClass = (() => {
         switch (typeIcon) {
             case "search":
-                return search;
+                return "CityElementTypeIconSearch";
             case "history":
-                return history;
-            case "favorite":
-                return favourite;
+                return "CityElementTypeIconHistory";
+            case "favourite":
+                return "CityElementTypeIconFavourite";
         }
     })()
 
+    if (value == null) {
+        value = "N/A";
+    }
+
     return (
         <div className="CityElement">
-            <div>
-                <img src={typeIconSrc} className="cityIcon" alt={typeIcon}/>
-                <p className="CityElementCity">{city}</p>
-            </div>
+            <div className={"CityElementTypeIcon " + iconTypeClass} />
+            <p className="CityElementCity">{city}</p>
+            <p className={"CityElementWeather"}>{value}</p>
+            <Icon name={icon} size={42}/>
         </div>
     )
 }
