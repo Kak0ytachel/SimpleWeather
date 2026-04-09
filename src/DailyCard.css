@@ -1,0 +1,14 @@
+.DailyCard{
+    /*display: inline-flex;*/
+    /*flex-direction: column;*/
+    /*gap: 20px;*/
+    /*width: 100%;*/
+    display: inline-grid;
+    grid-template-columns: auto auto auto auto;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+    justify-items: center;
+    gap: 20px;
+}

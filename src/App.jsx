@@ -10,6 +10,8 @@ import HourlyElement from "./HourlyElement.jsx";
 import HourlyCard from "./HourlyCard.jsx";
 import CityElement from "./CityElement.jsx";
 import CityCard from "./CityCard.jsx";
+import DailyElement from "./DailyElement.jsx";
+import DailyCard from "./DailyCard.jsx";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -27,6 +29,7 @@ function App() {
             <DataCard/>
             <HourlyCard/>
             <CityCard/>
+            <DailyCard/>
         </div>
         <div>
           <h1>Get started</h1>

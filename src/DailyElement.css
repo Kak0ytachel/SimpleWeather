@@ -1,0 +1,62 @@
+.DailyElementWeekday {
+    font-weight: 500;
+    font-size: 20px;
+    display: inline-block;
+    width: 100%;
+}
+
+.DailyElementDate {
+    font-weight: 500;
+    font-size: 16px;
+    width: 100%;
+    display: inline-block;
+    color: var(--text-color-secondary);
+}
+
+.DailyElementDayBlock {
+    display: inline-block;
+    width: min-content;
+}
+
+.DailyElementWeatherHigher {
+    font-weight: 700;
+    font-size: 24px;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.DailyElementWeatherLower {
+    font-weight: 700;
+    font-size: 24px;
+    display: inline-block;
+    color: var(--text-color-secondary);
+}
+
+.DailyElementRainChance {
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--text-color-secondary);
+    display: inline-block;
+}
+
+.DailyElementRainIcon {
+    mask-image: url(./assets/rain-symbol.svg);
+    /*fill: var(--text-color-secondary);*/
+    /*color: var(--text-color-secondary);*/
+    background-color: var(--text-color-secondary);
+    mask-repeat: no-repeat;
+    mask-size: cover;
+    mask-position: center;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.DailyElement {
+    display: inline-flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
