@@ -18,7 +18,7 @@ import MainCard from "./MainCard.jsx";
 function App() {
   // const [count, setCount] = useState(0)
 
-  return (
+
     // <>
     //   <section id="center">
     //     <div className="hero">
@@ -135,14 +135,33 @@ function App() {
     //   <div className="ticks"></div>
     //   <section id="spacer"></section>
     // </>
+
+    const cities = ["Krakow", "Amsterdam", "Warsaw", "Krasnoyarks"]
+    const [foundCities, setFoundCities] = useState([])
+
+
+    function searchInputHandler(e) {
+        let foundCities = []
+        const text = e.target.value;
+        for (let i = 0; i < cities.length; i++) {
+            if (cities[i].toLowerCase().includes(text.toLowerCase())) {
+                foundCities.push(cities[i])
+            }
+        }
+        setFoundCities(foundCities)
+        console.log(foundCities)
+    }
+
+
+    return (
       <div className={"BaseApp"}>
         <div>
             <Card>
-                <input className={"Search"} type="text" placeholder={"Start typing to search"} autoFocus></input>
+                <input className={"Search"} type="text" placeholder={"Start typing to search"} autoFocus onInput={searchInputHandler}></input>
             </Card>
           <Divider/>
           <Card>
-            <CityCard/>
+            <CityCard cities={foundCities} typeIcon={"search"}/>
           </Card>
           <Divider/>
           <Card>
@@ -193,4 +212,21 @@ function Card({children}) {
             {children}
         </div>
     )
+}
+
+let cachedWeather = {}
+
+// -> weather (string), icon (string)
+export function getCachedCurrentWeather(city) {
+    if (cachedWeather[city]) return cachedWeather[city];
+    cachedWeather[city] = randomWeather();
+    return cachedWeather[city];
+}
+
+function randomWeather()  {
+    const temperature = Math.floor(Math.random() * 25 - 5);
+    const weather = `${(temperature > 0) && "+"}${temperature}°`;
+    const icons = ["sun", "cloud", "rain", "moon-clouds"];
+    const icon = icons.at(Math.floor(Math.random() * icons.length));
+    return {weather, icon};
 }
