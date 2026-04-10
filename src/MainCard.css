@@ -1,0 +1,36 @@
+.MainCardTemperatureHeader1{
+    font-size: 72px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.MainCardTemperatureHeader2{
+    font-size: 24px;
+    font-weight: 600;
+    margin: 10px 0 0;
+}
+
+.MainCardCityHeader{
+    font-size: 24px;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+}
+
+.MainCard{
+    /*padding-block: 10px 20px;*/
+}
+
+.MainCardContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.MainCardWeatherText{
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-color-secondary);
+}

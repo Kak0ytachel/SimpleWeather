@@ -12,6 +12,11 @@ export default function DailyCard() {
             <DailyElement weekday={"Wednesday"} date={"Apr 06"} weatherHigher={"+5°"} weatherLower={"-1°"} rainChance={"20%"} icon={"sun"}/>
             <DailyElement weekday={"Thursday"} date={"Apr 07"} weatherHigher={"+3°"} weatherLower={"-3°"} rainChance={"20%"} icon={"rain"}/>
             <DailyElement weekday={"Friday"} date={"Apr 08"} weatherHigher={"+9°"} weatherLower={"+1°"} rainChance={"20%"} icon={"cloud"}/>
+            <DailyElement weekday={"Tuesday"} date={"Apr 05"} weatherHigher={"+8°"} weatherLower={"+1°"} rainChance={"20%"} icon={"cloud"}/>
+            <DailyElement weekday={"Wednesday"} date={"Apr 06"} weatherHigher={"+5°"} weatherLower={"-1°"} rainChance={"20%"} icon={"sun"}/>
+            <DailyElement weekday={"Thursday"} date={"Apr 07"} weatherHigher={"+3°"} weatherLower={"-3°"} rainChance={"20%"} icon={"rain"}/>
+            <DailyElement weekday={"Friday"} date={"Apr 08"} weatherHigher={"+9°"} weatherLower={"+1°"} rainChance={"20%"} icon={"cloud"}/>
+            <DailyElement weekday={"Thursday"} date={"Apr 07"} weatherHigher={"+3°"} weatherLower={"-3°"} rainChance={"20%"} icon={"rain"}/>
         </div>
     )
 }
