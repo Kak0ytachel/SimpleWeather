@@ -160,16 +160,19 @@ function App() {
                 <input className={"Search"} type="text" placeholder={"Start typing to search"} autoFocus onInput={searchInputHandler}></input>
             </Card>
           <Divider/>
+
+            {(foundCities.length > 0)? (<>
+              <Card>
+                <CityCard cities={foundCities} typeIcon={"search"}/>
+              </Card>
+              <Divider/>
+            </>): null}
           <Card>
-            <CityCard cities={foundCities} typeIcon={"search"}/>
+            <CityCard isSample={true}/>
           </Card>
           <Divider/>
           <Card>
-            <CityCard/>
-          </Card>
-          <Divider/>
-          <Card>
-            <CityCard/>
+            <CityCard isSample={true}/>
           </Card>
           <Divider/>
         </div>
@@ -225,7 +228,7 @@ export function getCachedCurrentWeather(city) {
 
 function randomWeather()  {
     const temperature = Math.floor(Math.random() * 25 - 5);
-    const weather = `${(temperature > 0) && "+"}${temperature}°`;
+    const weather = `${(temperature > 0) ? "+": ""}${temperature}°`;
     const icons = ["sun", "cloud", "rain", "moon-clouds"];
     const icon = icons.at(Math.floor(Math.random() * icons.length));
     return {weather, icon};

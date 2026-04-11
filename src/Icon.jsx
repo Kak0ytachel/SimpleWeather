@@ -5,6 +5,7 @@ import wind from './assets/wind.avif'
 import rain from './assets/rain.avif'
 import humidity from './assets/humidity.avif'
 import moon_clouds from './assets/moon-clouds.avif'
+import './Icon.css'
 
 export default function Icon({name, size}) {
     let src = (() => {
@@ -30,6 +31,6 @@ export default function Icon({name, size}) {
     }
 
     return (
-        <img src={src} alt={name} height={size} width={size}></img>
+        <img className="Icon" src={src} alt={name} height={size} width={size}></img>
     );
 }
