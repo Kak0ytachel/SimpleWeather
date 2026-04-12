@@ -13,26 +13,12 @@ async function getWeather(latitude = 50.0614, longitude = 19.9366) {
     const url = "https://api.open-meteo.com/v1/forecast";
     const responses = await fetchWeatherApi(url, params);
 
-    // Process first location. Add a for-loop for multiple locations or weather models
     const response = responses[0];
-
-    // Attributes for timezone and location
-    // const latitude = response.latitude();
-    // const longitude = response.longitude();
-    // const elevation = response.elevation();
     const utcOffsetSeconds = response.utcOffsetSeconds();
-
-    // console.log(
-    //     `\nCoordinates: ${latitude}°N ${longitude}°E`,
-    //     `\nElevation: ${elevation}m asl`,
-    //     `\nTimezone difference to GMT+0: ${utcOffsetSeconds}s`,
-    // );
-
 
     const current = response.current();
     const hourly = response.hourly();
     const daily = response.daily();
-
 
     // Define Int64 variables so they can be processed accordingly
     const sunset = daily.variables(4);
@@ -84,22 +70,6 @@ async function getWeather(latitude = 50.0614, longitude = 19.9366) {
     };
 
 
-
-    // The 'weatherData' object now contains a simple structure, with arrays of datetimes and weather information
-    // console.log(
-    //     `\nCurrent time: ${weatherData.current.time}\n`,
-    //     `\nCurrent temperature_2m: ${weatherData.current.temperature_2m}`,
-    //     `\nCurrent is_day: ${weatherData.current.is_day}`,
-    //     `\nCurrent weather_code: ${weatherData.current.weather_code}`,
-    //     `\nCurrent precipitation: ${weatherData.current.precipitation}`,
-    //     `\nCurrent wind_speed_10m: ${weatherData.current.wind_speed_10m}`,
-    //     `\nCurrent relative_humidity_2m: ${weatherData.current.relative_humidity_2m}`,
-    //     `\nCurrent cloud_cover: ${weatherData.current.cloud_cover}`,
-    //     `\nCurrent apparent_temperature: ${weatherData.current.apparent_temperature}`,
-    // );
-    // console.log("\nHourly data:\n", weatherData.hourly)
-    // console.log("\nDaily data:\n", weatherData.daily)
-
     let splitData = {
         current: weatherData.current,
         hourly: [],
@@ -120,9 +90,6 @@ async function getWeather(latitude = 50.0614, longitude = 19.9366) {
         }
     }
 
-
-
-    // console.log(splitData)
 
     let processedData = {
         current: {},
@@ -186,15 +153,7 @@ async function getWeather(latitude = 50.0614, longitude = 19.9366) {
 
     }
 
-    // console.log(processedData)
-
-    // console.log("splitData.current", splitData.current)
-
     const {weather, icon} = translateWeatherCondition(splitData.current.weather_code, splitData.current.is_day);
-    // console.log(weather, icon)
-
-    // console.log("todayData", todayData)
-    // console.log("processedTodayData", processedTodayData)
 
     const sunshineHours = Math.floor(todayData.sunshine_duration / 3600);
     const sunshineMinutes = Math.floor((todayData.sunshine_duration % 3600) / 60);
@@ -220,8 +179,6 @@ async function getWeather(latitude = 50.0614, longitude = 19.9366) {
     console.log(processedData)
     return processedData
 }
-
-
 
 
 export function translateWeatherCondition(code, isNight){
@@ -336,11 +293,11 @@ export function formatTemperature(value){
     return `${(value > 0)? "+": ""}${value}°`
 }
 
-async function geoAPI(name) {
+export async function search(name) {
     const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${name}&count=10&language=en&format=json`;
     const response = await fetch(geoUrl);
     let requestResult = await response.json();
-    // console.log(requestResult);
+
     if ("results" in requestResult) {
         requestResult = requestResult.results;
         requestResult = requestResult.filter(x => x.population !== undefined);
@@ -349,7 +306,6 @@ async function geoAPI(name) {
     } else {
         requestResult = [];
     }
-    // console.log(requestResult);
 
     let processedResults = [];
 
@@ -369,7 +325,6 @@ async function geoAPI(name) {
         longitudes.push(x.longitude);
 
         processedResults.push(cityRecord);
-        // console.log(x);
     }
 
     // console.log(processedResults);
@@ -389,16 +344,13 @@ async function geoAPI(name) {
 
     let index = 0;
     for (const response of responses) {
-        // Attributes for timezone and location
         // const latitude = response.latitude();
         // const longitude = response.longitude();
         const utcOffsetSeconds = response.utcOffsetSeconds();
         const current = response.current();
 
-        // const processedCurrent = processedResults.find(x => x.latitude === latitude && x.longitude === longitude);
         const processedCurrent = processedResults[index++];
-        // console.log(latitude, longitude);
-        // console.log(processedCurrent);
+
 
 
         // Note: The order of weather variables in the URL query and the indices below need to match
@@ -427,3 +379,4 @@ async function geoAPI(name) {
 
 // await getWeather();
 // await geoAPI("Krakow");
+await search("Krakow");

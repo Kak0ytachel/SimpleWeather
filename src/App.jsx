@@ -14,6 +14,7 @@ import DailyElement from "./DailyElement.jsx";
 import DailyCard from "./DailyCard.jsx";
 import Divider, {VerticalDivider} from "./Divider.jsx";
 import MainCard from "./MainCard.jsx";
+import {search} from "./weatherAPI.js"
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -136,23 +137,25 @@ function App() {
     //   <section id="spacer"></section>
     // </>
 
-    const cities = ["Krakow", "Amsterdam", "Warsaw", "Krasnoyarks"]
-    const [foundCities, setFoundCities] = useState([])
+    // const cities = ["Krakow", "Amsterdam", "Warsaw", "Krasnoyarks"]
+    // const [foundCities, setFoundCities] = useState([])
+    const [cityData, setCityData] = useState([])
 
-
-    function searchInputHandler(e) {
-        let foundCities = []
-        const text = e.target.value;
-        for (let i = 0; i < cities.length; i++) {
-            if (cities[i].toLowerCase().includes(text.toLowerCase())) {
-                foundCities.push(cities[i])
-            }
-        }
-        setFoundCities(foundCities)
-        console.log(foundCities)
+    async function searchInputHandler(e) {
+        // let foundCities = []
+        // const text = e.target.value;
+        // for (let i = 0; i < cities.length; i++) {
+        //     if (cities[i].toLowerCase().includes(text.toLowerCase())) {
+        //         foundCities.push(cities[i])
+        //     }
+        // }
+        // setFoundCities(foundCities)
+        // console.log(foundCities)
+        setCityData(await search(e.target.value));
+        console.log(cityData)
     }
 
-
+    //cities={foundCities}
     return (
       <div className={"BaseApp"}>
         <div>
@@ -161,9 +164,10 @@ function App() {
             </Card>
           <Divider/>
 
-            {(foundCities.length > 0)? (<>
+            {(cityData.length > 0)? (<>
               <Card>
-                <CityCard cities={foundCities} typeIcon={"search"}/>
+
+                <CityCard citiesData={cityData} typeIcon={"search"}/>
               </Card>
               <Divider/>
             </>): null}
