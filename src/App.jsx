@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from './assets/vite.svg'
 // import heroImg from './assets/hero.png'
@@ -139,9 +139,25 @@ function App() {
 
     // const cities = ["Krakow", "Amsterdam", "Warsaw", "Krasnoyarks"]
     // const [foundCities, setFoundCities] = useState([])
+
     const [cityData, setCityData] = useState([])
+    const [citySearchValue, setCitySearchValue] = useState("")
+
+    useEffect(handleCitySearchValueChange, [citySearchValue])
+
+    async function updateSearchResults(val) {
+        setCityData(await search(val));
+    }
+
+    function handleCitySearchValueChange() {
+        // console.log("search value changed")
+        const timeout = setTimeout(() => updateSearchResults(citySearchValue), 1000);
+        return () => clearTimeout(timeout);
+    }
 
     async function searchInputHandler(e) {
+        setCitySearchValue(e.target.value);
+
         // let foundCities = []
         // const text = e.target.value;
         // for (let i = 0; i < cities.length; i++) {
@@ -150,9 +166,7 @@ function App() {
         //     }
         // }
         // setFoundCities(foundCities)
-        // console.log(foundCities)
-        setCityData(await search(e.target.value));
-        console.log(cityData)
+        // console.log(foundCities)\
     }
 
     //cities={foundCities}

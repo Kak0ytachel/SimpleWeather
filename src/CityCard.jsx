@@ -4,10 +4,10 @@ import {getCachedCurrentWeather} from "./App.jsx";
 
 export default function CityCard({typeIcon = "favourite", cities = [], isSample = false, citiesData = []}) {
     let citiesElements = []
-    console.log("received", citiesData)
+    // console.log("received", citiesData)
     if (citiesData.length > 0) {
         citiesElements = citiesData.map((cityData) => {
-                return <CityElement city={cityData.city} typeIcon={typeIcon} value={cityData.temperature} icon={cityData.icon}/>
+                return <CityElement city={cityData.city} typeIcon={typeIcon} value={cityData.temperature} icon={cityData.icon} key={cityData.city + cityData.temperature}/>
             }
         )
     } else {
