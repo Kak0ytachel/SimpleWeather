@@ -140,6 +140,8 @@ function App() {
     // const cities = ["Krakow", "Amsterdam", "Warsaw", "Krasnoyarks"]
     // const [foundCities, setFoundCities] = useState([])
 
+    const [currentCity, setCurrentCity] = useState("Warsaw, Poland")
+
     const [cityData, setCityData] = useState([])
     const [citySearchValue, setCitySearchValue] = useState("")
 
@@ -153,6 +155,10 @@ function App() {
         // console.log("search value changed")
         const timeout = setTimeout(() => updateSearchResults(citySearchValue), 1000);
         return () => clearTimeout(timeout);
+    }
+
+    function handleCityClick(city) {
+        setCurrentCity(city)
     }
 
     async function searchInputHandler(e) {
@@ -181,23 +187,23 @@ function App() {
             {(cityData.length > 0)? (<>
               <Card>
 
-                <CityCard citiesData={cityData} typeIcon={"search"}/>
+                <CityCard citiesData={cityData} typeIcon={"search"} onCityClick={handleCityClick}/>
               </Card>
               <Divider/>
             </>): null}
           <Card>
-            <CityCard isSample={true}/>
+            <CityCard isSample={true} onCityClick={handleCityClick}/>
           </Card>
           <Divider/>
           <Card>
-            <CityCard isSample={true}/>
+            <CityCard isSample={true} onCityClick={handleCityClick}/>
           </Card>
           <Divider/>
         </div>
         <VerticalDivider/>
         <div>
           <Card>
-              <MainCard/>
+              <MainCard city={currentCity}/>
           </Card>
             <Divider/>
           <Card>

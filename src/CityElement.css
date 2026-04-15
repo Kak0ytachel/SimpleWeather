@@ -29,6 +29,7 @@
     font-size: 20px;
     font-weight: 500;
     text-align: left;
+    cursor: pointer;
 }
 
 /*.CityElementBoxCity, .CityElementBoxWeather {*/
@@ -48,4 +49,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.CityElementCity {
+    background-image: linear-gradient(var(--text-color), var(--text-color));
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+    background-size: 0 2px;
+    transition: background-size 1s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.CityElementCity:hover {
+    background-position: 0 100%;
+    background-size: 100% 2px;
+
 }

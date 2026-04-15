@@ -1,6 +1,6 @@
 import "./CityElement.css"
 import Icon from "./Icon.jsx";
-export default function CityElement({city, typeIcon, value, icon}) {
+export default function CityElement({city, typeIcon, value, icon, onCityClick = () => {}}) {
     let iconTypeClass = (() => {
         switch (typeIcon) {
             case "search":
@@ -19,7 +19,7 @@ export default function CityElement({city, typeIcon, value, icon}) {
     return (
         <div className="CityElement">
             <div className={"CityElementTypeIcon " + iconTypeClass} />
-            <p className="CityElementCity">{city}</p>
+            <p className="CityElementCity" onClick={() => onCityClick(city)}>{city}</p>
             <p className={"CityElementWeather"}>{value}</p>
             <Icon name={icon} size={42}/>
         </div>
