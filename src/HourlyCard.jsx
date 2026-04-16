@@ -1,7 +1,15 @@
 import HourlyElement from "./HourlyElement.jsx";
 import "./HourlyCard.css"
 
-export default function HourlyCard(){
+export default function HourlyCard({hourlyData = []}){
+    if (hourlyData.length !== 0) return (
+        <div className="HourlyCard">
+            {hourlyData.map((hourData) => {
+                return <HourlyElement hour={hourData.hour} icon={hourData.icon} value={hourData.temperature}/>
+            })}
+        </div>
+
+    )
     return (
         <div className="HourlyCard">
             <HourlyElement hour={"Now"} icon={"sun"} value={"+15°"}/>

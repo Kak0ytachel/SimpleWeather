@@ -99,6 +99,7 @@ export async function getWeather(latitude = 50.0614, longitude = 19.9366) {
     const now = new Date();
 
     for (let hourData of splitData.hourly) {
+        if (processedData.hourly.length >= 12) break;
         const {weather, icon} = translateWeatherCondition(hourData.weather_code, hourData.is_day);
         const temperature = Math.round(hourData.temperature_2m);
 
@@ -113,11 +114,12 @@ export async function getWeather(latitude = 50.0614, longitude = 19.9366) {
             "weather": weather,
             "icon": icon,
             "temperature": formatTemperature(temperature),
-            "hour": (diff > 0)? hour: "Now",
+            "hour": hour, // (diff > 0)? hour: "Now"
             // hour: hour
         }
         processedData.hourly.push(newHourData);
     }
+    processedData.hourly[0]['hour'] = "Now";
 
     let todayData = splitData.daily[0]; //placeholder
     let processedTodayData = {rainChance: null, temperatureLower: null, temperatureHigher: null};

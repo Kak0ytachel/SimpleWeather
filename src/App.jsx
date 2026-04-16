@@ -239,7 +239,7 @@ function App() {
           </Card>
           <Divider/>
           <Card>
-            <HourlyCard/>
+            <HourlyCard hourlyData={currentCityWeather.hourly}/>
           </Card>
 
           <Divider/>
