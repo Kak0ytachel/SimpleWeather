@@ -150,6 +150,8 @@ function App() {
 
     useEffect(handleCitySearchValueChange, [citySearchValue])
     useEffect(loadCurrentCityWeather, [currentCityData])
+    // useEffect(() => {console.log("weather12", currentCityWeather)}, [currentCityWeather])
+
 
     function loadCurrentCityWeather() {
         // console.log("currentCityData", currentCityData)
@@ -157,10 +159,11 @@ function App() {
         let weatherData = {};
         const f = async () => {
             weatherData = await getWeather(currentCityData.latitude, currentCityData.longitude)
+            // console.log("new weatherData", weatherData);
+            setCurrentCityWeather(weatherData);
         }
         f();
-        // console.log("new weatherData", weatherData);
-        setCurrentCityWeather(weatherData);
+
     }
 
     async function updateSearchResults(val) {
@@ -228,7 +231,7 @@ function App() {
         <VerticalDivider/>
         <div>
           <Card>
-              <MainCard city={currentCity}/>
+              <MainCard city={currentCity} temperature={currentCityWeather.current?.temperature} temperatureHigher={currentCityWeather.current?.temperatureHigher} temperatureLower={currentCityWeather.current?.temperatureLower} weather={currentCityWeather.current?.weather} icon={currentCityWeather.current?.icon}/>
           </Card>
             <Divider/>
           <Card>
