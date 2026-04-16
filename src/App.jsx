@@ -14,7 +14,7 @@ import DailyElement from "./DailyElement.jsx";
 import DailyCard from "./DailyCard.jsx";
 import Divider, {VerticalDivider} from "./Divider.jsx";
 import MainCard from "./MainCard.jsx";
-import {search} from "./weatherAPI.js"
+import {getWeather, search} from "./weatherAPI.js"
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -140,12 +140,28 @@ function App() {
     // const cities = ["Krakow", "Amsterdam", "Warsaw", "Krasnoyarks"]
     // const [foundCities, setFoundCities] = useState([])
 
-    const [currentCity, setCurrentCity] = useState("Warsaw, Poland")
+    const [currentCity, setCurrentCity] = useState("Warsaw, Poland") // TODO replace with object
+    const [currentCityWeather, setCurrentCityWeather] = useState({})
+    const [currentCityData, setCurrentCityData] = useState({})
 
     const [cityData, setCityData] = useState([])
     const [citySearchValue, setCitySearchValue] = useState("")
 
+
     useEffect(handleCitySearchValueChange, [citySearchValue])
+    useEffect(loadCurrentCityWeather, [currentCityData])
+
+    function loadCurrentCityWeather() {
+        // console.log("currentCityData", currentCityData)
+
+        let weatherData = {};
+        const f = async () => {
+            weatherData = await getWeather(currentCityData.latitude, currentCityData.longitude)
+        }
+        f();
+        // console.log("new weatherData", weatherData);
+        setCurrentCityWeather(weatherData);
+    }
 
     async function updateSearchResults(val) {
         setCityData(await search(val));
@@ -158,7 +174,16 @@ function App() {
     }
 
     function handleCityClick(city) {
-        setCurrentCity(city)
+        // console.log("city clicked", city)
+        if (typeof city == 'string' || city instanceof String) {
+            // console.log("city is string")
+            setCurrentCity(city)
+        } else {
+            // console.log("city is object")
+            // console.log(city.city)
+            setCurrentCityData(city)
+            setCurrentCity(city.city)
+        }
     }
 
     async function searchInputHandler(e) {

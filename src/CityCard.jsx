@@ -7,7 +7,7 @@ export default function CityCard({typeIcon = "favourite", cities = [], isSample 
     // console.log("received", citiesData)
     if (citiesData.length > 0) {
         citiesElements = citiesData.map((cityData) => {
-                return <CityElement city={cityData.city} typeIcon={typeIcon} value={cityData.temperature} icon={cityData.icon} key={cityData.city + cityData.temperature} onCityClick={onCityClick}/>
+                return <CityElement city={cityData.city} typeIcon={typeIcon} value={cityData.temperature} icon={cityData.icon} key={cityData.id} onCityClick={() => onCityClick(cityData)} latitude={cityData.latitude} longitude={cityData.longitude}/>
             }
         )
     } else {

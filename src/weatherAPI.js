@@ -1,6 +1,6 @@
 import { fetchWeatherApi } from "openmeteo";
 
-async function getWeather(latitude = 50.0614, longitude = 19.9366) {
+export async function getWeather(latitude = 50.0614, longitude = 19.9366) {
     const params = {
         latitude: latitude,
         longitude: longitude,
@@ -341,11 +341,12 @@ export async function search(name) {
     const weatherUrl = "https://api.open-meteo.com/v1/forecast";
     const responses = await fetchWeatherApi(weatherUrl, params);
     let results = []
+    let i = 0;
 
     let index = 0;
     for (const response of responses) {
-        // const latitude = response.latitude();
-        // const longitude = response.longitude();
+        const latitude = response.latitude();
+        const longitude = response.longitude();
         const utcOffsetSeconds = response.utcOffsetSeconds();
         const current = response.current();
 
@@ -368,6 +369,9 @@ export async function search(name) {
             temperature: formatTemperature(Math.round(weatherData.current.temperature_2m)),
             weather: weather,
             icon: icon,
+            latitude: latitude,
+            longitude: longitude,
+            id: "s" + i++,
         }
 
         results.push(result);
@@ -379,4 +383,4 @@ export async function search(name) {
 
 // await getWeather();
 // await geoAPI("Krakow");
-await search("Krakow");
+// await search("Krakow");
