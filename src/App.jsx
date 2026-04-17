@@ -251,7 +251,7 @@ function App() {
         <VerticalDivider/>
         <div>
           <Card>
-            <DailyCard/>
+            <DailyCard dailyData={currentCityWeather.daily}/>
           </Card>
           <Divider/>
         </div>

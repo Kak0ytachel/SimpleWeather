@@ -2,7 +2,8 @@ import DailyElement from "./DailyElement.jsx";
 import "./DailyCard.css"
 
 
-export default function DailyCard() {
+export default function DailyCard({dailyData = {}, limit = 12}) {
+    if (Object.keys(dailyData).length === 0)
     return (
         <div className="DailyCard">
             <DailyElement/>
@@ -19,4 +20,12 @@ export default function DailyCard() {
             <DailyElement weekday={"Thursday"} date={"Apr 07"} weatherHigher={"+3°"} weatherLower={"-3°"} rainChance={"20%"} icon={"rain"}/>
         </div>
     )
+
+    return <div className="DailyCard">
+        {
+            dailyData.slice(0, limit).map((dayData) =>
+            <DailyElement weekday={dayData.weekday} date={dayData.date} weatherHigher={dayData.temperatureHigher} weatherLower={dayData.temperatureLower} rainChance={dayData.rainChance} icon={dayData.icon}/>)
+        }
+
+    </div>
 }
