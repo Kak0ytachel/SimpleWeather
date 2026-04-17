@@ -281,7 +281,7 @@ export function getCachedCurrentWeather(city) {
 function randomWeather()  {
     const temperature = Math.floor(Math.random() * 25 - 5);
     const weather = `${(temperature > 0) ? "+": ""}${temperature}°`;
-    const icons = ["sun", "cloud", "rain", "moon-clouds"];
+    const icons = ["sun", "cloud", "rain", "moon_cloudy"];
     const icon = icons.at(Math.floor(Math.random() * icons.length));
     return {weather, icon};
 }
