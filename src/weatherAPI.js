@@ -100,7 +100,7 @@ export async function getWeather(latitude = 50.0614, longitude = 19.9366) {
 
     for (let hourData of splitData.hourly) {
         if (processedData.hourly.length >= 12) break;
-        const {weather, icon} = translateWeatherCondition(hourData.weather_code, hourData.is_day);
+        const {weather, icon} = translateWeatherCondition(hourData.weather_code, !hourData.is_day);
         const temperature = Math.round(hourData.temperature_2m);
 
         const date= new Date(hourData.time);
@@ -155,7 +155,7 @@ export async function getWeather(latitude = 50.0614, longitude = 19.9366) {
 
     }
 
-    const {weather, icon} = translateWeatherCondition(splitData.current.weather_code, splitData.current.is_day);
+    const {weather, icon} = translateWeatherCondition(splitData.current.weather_code, !splitData.current.is_day);
 
     const sunshineHours = Math.floor(todayData.sunshine_duration / 3600);
     const sunshineMinutes = Math.floor((todayData.sunshine_duration % 3600) / 60);
@@ -365,7 +365,7 @@ export async function search(name) {
                 weather_code: current.variables(2).value(),
             },
         };
-        const {weather, icon} = translateWeatherCondition(weatherData.current.weather_code, weatherData.current.is_day);
+        const {weather, icon} = translateWeatherCondition(weatherData.current.weather_code, !weatherData.current.is_day);
         const result = {
             city: processedCurrent.name,
             temperature: formatTemperature(Math.round(weatherData.current.temperature_2m)),
