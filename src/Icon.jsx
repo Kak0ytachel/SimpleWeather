@@ -23,6 +23,9 @@ import heavy_snowstorm from './assets/heavy_snowstorm.avif'
 import moon from './assets/moon.avif'
 import moon_partly_cloudy from './assets/moon_partly_cloudy.avif'
 import moon_cloudy from './assets/moon_cloudy.avif'
+import sunrise from './assets/sunrise.avif'
+import sunset from './assets/sunset.avif'
+import uv from './assets/uv.avif'
 import './Icon.css'
 
 export default function Icon({name, size}) {
@@ -76,6 +79,12 @@ export default function Icon({name, size}) {
                 return moon_cloudy;
             case "moon_partly_cloudy":
                 return moon_partly_cloudy;
+            case "sunrise":
+                return sunrise;
+            case "sunset":
+                return sunset;
+            case "uv":
+                return uv;
             default:
                 return na;
         }

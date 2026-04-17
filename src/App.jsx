@@ -235,7 +235,7 @@ function App() {
           </Card>
             <Divider/>
           <Card>
-            <DataCard/>
+            <DataCard type={1} currentData={currentCityWeather.current}/>
           </Card>
           <Divider/>
           <Card>
@@ -244,7 +244,7 @@ function App() {
 
           <Divider/>
           <Card>
-            <DataCard/>
+            <DataCard type={2} currentData={currentCityWeather.current}/>
           </Card>
 
         </div>
