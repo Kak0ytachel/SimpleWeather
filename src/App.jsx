@@ -140,18 +140,36 @@ function App() {
     // const cities = ["Krakow", "Amsterdam", "Warsaw", "Krasnoyarks"]
     // const [foundCities, setFoundCities] = useState([])
 
-    const [currentCity, setCurrentCity] = useState("Warsaw, Poland") // TODO replace with object
+    const [currentCity, setCurrentCity] = useState("Warsaw, Poland")
     const [currentCityWeather, setCurrentCityWeather] = useState({})
-    const [currentCityData, setCurrentCityData] = useState({})
+    const [currentCityData, _setCurrentCityData] = useState({})
 
     const [cityData, setCityData] = useState([])
     const [citySearchValue, setCitySearchValue] = useState("")
 
+    function setCurrentCityData(data) {
+        // console.log("setting current city data", data)
+        if (Object.keys(currentCityData).length !== 0) {
+            if (previousCitiesData.filter((city) => city.longitude === currentCityData.longitude &&
+                city.latitude === currentCityData.latitude).length === 0) {
+                setPreviousCitiesData((prev) => [currentCityData, ...prev])
+            } else {
+                setPreviousCitiesData((prev) => [currentCityData, ...(prev.filter((city) => city.longitude !== currentCityData.longitude ||
+                    city.latitude !== currentCityData.latitude))])
+            }
+
+        }
+        _setCurrentCityData(data)
+    }
+
+    // useEffect(() => {console.log("cityData", cityData)}, [cityData])
+    // useEffect(() => {console.log("currentCityData", currentCityData)}, [currentCityData])
 
     useEffect(handleCitySearchValueChange, [citySearchValue])
     useEffect(loadCurrentCityWeather, [currentCityData])
     // useEffect(() => {console.log("weather12", currentCityWeather)}, [currentCityWeather])
 
+    const [previousCitiesData, setPreviousCitiesData] = useState([])
 
     function loadCurrentCityWeather() {
         // console.log("currentCityData", currentCityData)
@@ -178,7 +196,7 @@ function App() {
 
     function handleCityClick(city) {
         // console.log("city clicked", city)
-        if (typeof city == 'string' || city instanceof String) {
+        if (typeof city == 'string' || city instanceof String) { // TODO: remove placeholder
             // console.log("city is string")
             setCurrentCity(city)
         } else {
@@ -220,7 +238,7 @@ function App() {
               <Divider/>
             </>): null}
           <Card>
-            <CityCard isSample={true} onCityClick={handleCityClick}/>
+            <CityCard citiesData={previousCitiesData} onCityClick={handleCityClick} typeIcon={"history"}/>
           </Card>
           <Divider/>
           <Card>
