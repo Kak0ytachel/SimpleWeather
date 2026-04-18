@@ -140,12 +140,13 @@ function App() {
     // const cities = ["Krakow", "Amsterdam", "Warsaw", "Krasnoyarks"]
     // const [foundCities, setFoundCities] = useState([])
 
-    const [currentCity, setCurrentCity] = useState("Warsaw, Poland")
+    // const [currentCity, setCurrentCity] = useState("Warsaw, Poland")
     const [currentCityWeather, setCurrentCityWeather] = useState({})
-    const [currentCityData, _setCurrentCityData] = useState({})
+    const [currentCityData, _setCurrentCityData] = useState(getInitialCityData())
 
     const [cityData, setCityData] = useState([])
     const [citySearchValue, setCitySearchValue] = useState("")
+    const [previousCitiesData, setPreviousCitiesData] = useState([])
 
     function setCurrentCityData(data) {
         // console.log("setting current city data", data)
@@ -162,14 +163,62 @@ function App() {
         _setCurrentCityData(data)
     }
 
+    function saveCookie(name, data) {
+        document.cookie = `${name}=${JSON.stringify(data)}; path=/; max-age=31536000; SameSite=Lax`;
+        console.log("saved cookie", data)
+    }
+
+    function loadCookie(name) {
+        let result = document.cookie.match(new RegExp(`${name}=([^;]+)`));
+        result && (result = JSON.parse(result[1]))
+        return result;
+    }
+
+    useEffect(() => {
+        if (currentCityData.longitude && currentCityData.latitude) {
+            saveCookie("currentCityData", currentCityData)
+        }
+    }, [currentCityData])
+
+    function getInitialCityData(){
+        const data = loadCookie("currentCityData")
+        console.log("loaded cookie", data)
+        if (data) {
+            // _setCurrentCityData(data)
+            console.log("loaded and set cookie", data)
+            return data
+        }
+        else {
+            return {
+                city: "Warsaw, Poland",
+                icon: "na",
+                id: "0",
+                latitude: 52.2300910949707,
+                longitude: 21.017074584960938,
+                temperature: "+0°",
+                weather: "N/A"
+            }
+        }
+    }
+
+    // useEffect(() => {
+    //     const data = loadCookie("currentCityData")
+    //     console.log("loaded cookie", data)
+    //     if (data) {
+    //         const f = async () => {
+    //             _setCurrentCityData(data)
+    //             console.log("loaded and set cookie", data)
+    //         }
+    //         f();
+    //     }
+    // }, [])
+
     // useEffect(() => {console.log("cityData", cityData)}, [cityData])
     // useEffect(() => {console.log("currentCityData", currentCityData)}, [currentCityData])
 
     useEffect(handleCitySearchValueChange, [citySearchValue])
     useEffect(loadCurrentCityWeather, [currentCityData])
     // useEffect(() => {console.log("weather12", currentCityWeather)}, [currentCityWeather])
-
-    const [previousCitiesData, setPreviousCitiesData] = useState([])
 
     function loadCurrentCityWeather() {
         // console.log("currentCityData", currentCityData)
@@ -198,12 +247,12 @@ function App() {
         // console.log("city clicked", city)
         if (typeof city == 'string' || city instanceof String) { // TODO: remove placeholder
             // console.log("city is string")
-            setCurrentCity(city)
+            // setCurrentCity(city)
         } else {
             // console.log("city is object")
             // console.log(city.city)
             setCurrentCityData(city)
-            setCurrentCity(city.city)
+            // setCurrentCity(city.city)
         }
     }
 
@@ -237,10 +286,12 @@ function App() {
               </Card>
               <Divider/>
             </>): null}
-          <Card>
-            <CityCard citiesData={previousCitiesData} onCityClick={handleCityClick} typeIcon={"history"}/>
-          </Card>
-          <Divider/>
+          {(previousCitiesData.length > 0)? (<>
+              <Card>
+                <CityCard citiesData={previousCitiesData} onCityClick={handleCityClick} typeIcon={"history"}/>
+              </Card>
+            <Divider/>
+          </>) : null}
           <Card>
             <CityCard isSample={true} onCityClick={handleCityClick}/>
           </Card>
@@ -249,7 +300,7 @@ function App() {
         <VerticalDivider/>
         <div>
           <Card>
-              <MainCard city={currentCity} temperature={currentCityWeather.current?.temperature} temperatureHigher={currentCityWeather.current?.temperatureHigher} temperatureLower={currentCityWeather.current?.temperatureLower} weather={currentCityWeather.current?.weather} icon={currentCityWeather.current?.icon}/>
+              <MainCard city={currentCityData.city} temperature={currentCityWeather.current?.temperature} temperatureHigher={currentCityWeather.current?.temperatureHigher} temperatureLower={currentCityWeather.current?.temperatureLower} weather={currentCityWeather.current?.weather} icon={currentCityWeather.current?.icon}/>
           </Card>
             <Divider/>
           <Card>
