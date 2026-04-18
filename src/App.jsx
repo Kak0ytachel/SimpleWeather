@@ -15,6 +15,7 @@ import DailyCard from "./DailyCard.jsx";
 import Divider, {VerticalDivider} from "./Divider.jsx";
 import MainCard from "./MainCard.jsx";
 import {getWeather, search} from "./weatherAPI.js"
+import TextButton from "./TextButton.jsx";
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -147,6 +148,7 @@ function App() {
     const [cityData, setCityData] = useState([])
     const [citySearchValue, setCitySearchValue] = useState("")
     const [previousCitiesData, setPreviousCitiesData] = useState(getInitialPreviousCityData())
+    const [savedCitiesData, setSavedCitiesData] = useState([])
 
     function setCurrentCityData(data) { // updates current and saves previous value
         const maxSize = 5;
@@ -270,6 +272,19 @@ function App() {
         // console.log(foundCities)\
     }
 
+    function handleSaveClick() {
+        console.log("save clicked", savedCitiesData)
+        if (savedCitiesData.filter((city) => city.longitude === currentCityData.longitude &&
+            city.latitude === currentCityData.latitude).length === 0) {
+            setSavedCitiesData((prev) => [currentCityData, ...prev])
+        } else {
+            setSavedCitiesData((prev) => [...(prev.filter((city) => city.longitude !== currentCityData.longitude ||
+                city.latitude !== currentCityData.latitude))])
+        }
+    }
+
+    const isSaved = savedCitiesData.filter((city) => city.longitude === currentCityData.longitude && city.latitude === currentCityData.latitude).length > 0;
+
     //cities={foundCities}
     return (
       <div className={"BaseApp"}>
@@ -292,10 +307,17 @@ function App() {
               </Card>
             <Divider/>
           </>) : null}
+          {(savedCitiesData.length > 0)? (<>
+            <Card>
+              <CityCard citiesData={savedCitiesData} onCityClick={handleCityClick}/>
+            </Card>
+            <Divider/>
+          </>): null}
           <Card>
-            <CityCard isSample={true} onCityClick={handleCityClick}/>
+            <TextButton text={isSaved? "Unsave": "Save"} onClick={handleSaveClick}/>
+            <TextButton text={"Refresh"}/>
+            <TextButton text={"Clear history"}/>
           </Card>
-          <Divider/>
         </div>
         <VerticalDivider/>
         <div>
