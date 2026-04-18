@@ -8,6 +8,7 @@ export async function getWeather(latitude = 50.0614, longitude = 19.9366) {
         hourly: ["weather_code", "is_day", "temperature_2m", "precipitation_probability"],
         current: ["temperature_2m", "is_day", "weather_code", "precipitation", "wind_speed_10m", "relative_humidity_2m", "cloud_cover", "apparent_temperature"],
         forecast_days: 14,
+        timezone: "auto",
         timeformat: "unixtime",
     };
     const url = "https://api.open-meteo.com/v1/forecast";
@@ -96,8 +97,11 @@ export async function getWeather(latitude = 50.0614, longitude = 19.9366) {
         hourly: [],
         daily: []
     }
-    const now = new Date();
-
+    const userOffset = new Date().getTimezoneOffset() * -60;
+    const now = Number(new Date()) + (utcOffsetSeconds - userOffset) * 1000;
+    // console.log("utc1 ", )
+    // console.log("now", Date(now))
+    // console.log("utcOffsetSeconds", utcOffsetSeconds)
     for (let hourData of splitData.hourly) {
         if (processedData.hourly.length >= 12) break;
         const {weather, icon} = translateWeatherCondition(hourData.weather_code, !hourData.is_day);
@@ -110,11 +114,13 @@ export async function getWeather(latitude = 50.0614, longitude = 19.9366) {
         if (diff < -3600000 || diff > 26 * 60 * 60 * 1000) continue;
         if (hour % 2 == 1 && diff > -3600000) continue;
         // console.log(hour, diff)
+        // console.log("hour diff: ", hour, date.toLocaleTimeString("en-UK", {hour: "2-digit", timeZone: hourData.timeZone}))
         let newHourData = {
             "weather": weather,
             "icon": icon,
             "temperature": formatTemperature(temperature),
-            "hour": hour, // (diff > 0)? hour: "Now"
+            "hour": date.toLocaleTimeString("en-UK", {hour: "2-digit", timeZone: hourData.timeZone}),
+            // (diff > 0)? hour: "Now"
             // hour: hour
         }
         processedData.hourly.push(newHourData);
