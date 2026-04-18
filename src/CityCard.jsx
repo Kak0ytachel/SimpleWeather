@@ -7,7 +7,7 @@ export default function CityCard({typeIcon = "favourite", cities = [], isSample 
     // console.log("received", citiesData)
     if (citiesData.length > 0) {
         citiesElements = citiesData.map((cityData) => {
-                return <CityElement city={cityData.city} typeIcon={typeIcon} value={cityData.temperature} icon={cityData.icon} key={cityData.id} onCityClick={() => onCityClick(cityData)} latitude={cityData.latitude} longitude={cityData.longitude}/>
+                return <CityElement city={cityData.city} typeIcon={typeIcon} value={cityData.temperature} icon={cityData.icon} key={makeKey(cityData)} onCityClick={() => onCityClick(cityData)} latitude={cityData.latitude} longitude={cityData.longitude}/>
             }
         )
     } else {
@@ -30,4 +30,8 @@ export default function CityCard({typeIcon = "favourite", cities = [], isSample 
             </>
         ): null}
     </div>
+}
+
+function makeKey(cityData) {
+    return cityData.longitude * 1000 + cityData.latitude
 }

@@ -24,7 +24,7 @@ export default function DailyCard({dailyData = {}, limit = 12}) {
     return <div className="DailyCard">
         {
             dailyData.slice(0, limit).map((dayData) =>
-            <DailyElement weekday={dayData.weekday} date={dayData.date} weatherHigher={dayData.temperatureHigher} weatherLower={dayData.temperatureLower} rainChance={dayData.rainChance} icon={dayData.icon}/>)
+            <DailyElement key={dayData.date} weekday={dayData.weekday} date={dayData.date} weatherHigher={dayData.temperatureHigher} weatherLower={dayData.temperatureLower} rainChance={dayData.rainChance} icon={dayData.icon}/>)
         }
 
     </div>

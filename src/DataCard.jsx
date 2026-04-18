@@ -2,7 +2,7 @@ import DataElement from "./DataElement.jsx";
 import './DataCard.css'
 
 export default function DataCard({type = 0, currentData = {}}) {
-    console.log()
+    // console.log()
     if (type === 0 || Object.keys(currentData).length === 0) { // sample data
         return (
             <div className="DataCard">

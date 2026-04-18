@@ -146,26 +146,29 @@ function App() {
 
     const [cityData, setCityData] = useState([])
     const [citySearchValue, setCitySearchValue] = useState("")
-    const [previousCitiesData, setPreviousCitiesData] = useState([])
+    const [previousCitiesData, setPreviousCitiesData] = useState(getInitialPreviousCityData())
 
-    function setCurrentCityData(data) {
+    function setCurrentCityData(data) { // updates current and saves previous value
+        const maxSize = 5;
         // console.log("setting current city data", data)
         if (Object.keys(currentCityData).length !== 0) {
             if (previousCitiesData.filter((city) => city.longitude === currentCityData.longitude &&
                 city.latitude === currentCityData.latitude).length === 0) {
-                setPreviousCitiesData((prev) => [currentCityData, ...prev])
+                setPreviousCitiesData((prev) => [currentCityData, ...prev].slice(0, maxSize))
             } else {
                 setPreviousCitiesData((prev) => [currentCityData, ...(prev.filter((city) => city.longitude !== currentCityData.longitude ||
-                    city.latitude !== currentCityData.latitude))])
+                    city.latitude !== currentCityData.latitude))].slice(0, maxSize))
             }
 
         }
         _setCurrentCityData(data)
     }
 
+    // useEffect(() => {console.log('pCD', previousCitiesData)}, [previousCitiesData])
+
     function saveCookie(name, data) {
         document.cookie = `${name}=${JSON.stringify(data)}; path=/; max-age=31536000; SameSite=Lax`;
-        console.log("saved cookie", data)
+        // console.log("saved cookie", data)
     }
 
     function loadCookie(name) {
@@ -182,10 +185,10 @@ function App() {
 
     function getInitialCityData(){
         const data = loadCookie("currentCityData")
-        console.log("loaded cookie", data)
+        // console.log("loaded cookie", data)
         if (data) {
             // _setCurrentCityData(data)
-            console.log("loaded and set cookie", data)
+            // console.log("loaded and set cookie", data)
             return data
         }
         else {
@@ -201,17 +204,14 @@ function App() {
         }
     }
 
-    // useEffect(() => {
-    //     const data = loadCookie("currentCityData")
-    //     console.log("loaded cookie", data)
-    //     if (data) {
-    //         const f = async () => {
-    //             _setCurrentCityData(data)
-    //             console.log("loaded and set cookie", data)
-    //         }
-    //         f();
-    //     }
-    // }, [])
+    useEffect(() => {
+        saveCookie("previousCitiesData", previousCitiesData);
+    })
+
+    function getInitialPreviousCityData() {
+        // TODO add updating weather
+        return loadCookie("previousCitiesData") || []
+    }
 
     // useEffect(() => {console.log("cityData", cityData)}, [cityData])
     // useEffect(() => {console.log("currentCityData", currentCityData)}, [currentCityData])

@@ -5,7 +5,7 @@ export default function HourlyCard({hourlyData = []}){
     if (hourlyData.length !== 0) return (
         <div className="HourlyCard">
             {hourlyData.map((hourData) => {
-                return <HourlyElement hour={hourData.hour} icon={hourData.icon} value={hourData.temperature}/>
+                return <HourlyElement key={hourData.hour} hour={hourData.hour} icon={hourData.icon} value={hourData.temperature}/>
             })}
         </div>
 

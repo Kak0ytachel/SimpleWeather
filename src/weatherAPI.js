@@ -178,7 +178,7 @@ export async function getWeather(latitude = 50.0614, longitude = 19.9366) {
 
     }
     // console.log(processedData.current)
-    console.log(processedData)
+    console.log("WeatherAPI getWeather ", processedData)
     return processedData
 }
 
@@ -379,7 +379,7 @@ export async function search(name) {
         results.push(result);
 
     }
-    console.log(results);
+    console.log("weatherAPI search ", results);
     return results;
 }
 
