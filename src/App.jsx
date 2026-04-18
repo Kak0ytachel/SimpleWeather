@@ -148,7 +148,7 @@ function App() {
     const [cityData, setCityData] = useState([])
     const [citySearchValue, setCitySearchValue] = useState("")
     const [previousCitiesData, setPreviousCitiesData] = useState(getInitialPreviousCityData())
-    const [savedCitiesData, setSavedCitiesData] = useState([])
+    const [savedCitiesData, setSavedCitiesData] = useState(getInitialSavedCitiesData())
 
     function setCurrentCityData(data) { // updates current and saves previous value
         const maxSize = 5;
@@ -215,12 +215,23 @@ function App() {
         return loadCookie("previousCitiesData") || []
     }
 
+    function getInitialSavedCitiesData() {
+        // TODO add updating weather
+        return loadCookie("savedCitiesData") || []
+    }
+
     // useEffect(() => {console.log("cityData", cityData)}, [cityData])
     // useEffect(() => {console.log("currentCityData", currentCityData)}, [currentCityData])
 
     useEffect(handleCitySearchValueChange, [citySearchValue])
     useEffect(loadCurrentCityWeather, [currentCityData])
     // useEffect(() => {console.log("weather12", currentCityWeather)}, [currentCityWeather])
+
+    useEffect( () => {
+        if (savedCitiesData !== null) {
+            saveCookie("savedCitiesData", savedCitiesData);
+        }
+    }, [savedCitiesData])
 
     function loadCurrentCityWeather() {
         // console.log("currentCityData", currentCityData)
