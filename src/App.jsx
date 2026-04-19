@@ -176,6 +176,13 @@ function App() {
         f()
     }
 
+    function refreshAll() {
+        setCurrentCityWeather((prevState) => {prevState.current.icon = "na"; return prevState;})
+        refreshPrevious();
+        refreshSaved();
+        loadCurrentCityWeather();
+    }
+
     function setCurrentCityData(data) { // changes current and saves previous value
         const maxSize = 5;
         // console.log("setting current city data", data)
@@ -332,8 +339,8 @@ function App() {
           </>): null}
           <Card>
             <TextButton text={isSaved? "Unsave": "Save"} onClick={handleSaveClick}/>
-            <TextButton text={"Refresh"}/>
-            <TextButton text={"Clear history"}/>
+            <TextButton text={"Refresh"} onClick={refreshAll}/>
+            <TextButton text={"Clear history"} onClick={() => setPreviousCitiesData([])}/>
           </Card>
         </div>
         <VerticalDivider/>
