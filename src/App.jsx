@@ -137,7 +137,13 @@ function App() {
     //   <div className="ticks"></div>
     //   <section id="spacer"></section>
     // </>
+    const [width, setWidth] = useState(window.innerWidth);
 
+    useEffect(() => {
+        const handleResize = () => setWidth(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     function getInitialPreviousCityData() { // loads previous cities from cookie
         return loadCookie("previousCitiesData") || []
@@ -309,68 +315,130 @@ function App() {
 
     const isSaved = savedCitiesData.filter((city) => city.longitude === currentCityData.longitude && city.latitude === currentCityData.latitude).length > 0;
 
-    //cities={foundCities}
-    return (
-      <div className={"BaseApp"}>
-        <div>
+
+    const searchCard = (
+        <>
             <Card>
                 <input className={"Search"} type="text" placeholder={"Start typing to search"} autoFocus onInput={searchInputHandler}></input>
             </Card>
-          <Divider/>
-
-            {(cityData.length > 0)? (<>
-              <Card>
-
-                <CityCard citiesData={cityData} typeIcon={"search"} onCityClick={handleCityClick}/>
-              </Card>
-              <Divider/>
-            </>): null}
-          {(previousCitiesData.length > 0)? (<>
-              <Card>
-                <CityCard citiesData={previousCitiesData} onCityClick={handleCityClick} typeIcon={"history"}/>
-              </Card>
             <Divider/>
-          </>) : null}
-          {(savedCitiesData.length > 0)? (<>
+            {(cityData.length > 0)? (<>
+                <Card>
+
+                    <CityCard citiesData={cityData} typeIcon={"search"} onCityClick={handleCityClick}/>
+                </Card>
+                <Divider/>
+            </>): null}
+
+        </>
+    )
+
+    const citiesCard = (
+        <>
+            {(previousCitiesData.length > 0)? (<>
+                <Card>
+                    <CityCard citiesData={previousCitiesData} onCityClick={handleCityClick} typeIcon={"history"}/>
+                </Card>
+                <Divider/>
+            </>) : null}
+            {(savedCitiesData.length > 0)? (<>
+                <Card>
+                    <CityCard citiesData={savedCitiesData} onCityClick={handleCityClick}/>
+                </Card>
+            </>): null}
+        </>
+    )
+
+    const buttonsCard = (
+        <>
+            <Divider/>
             <Card>
-              <CityCard citiesData={savedCitiesData} onCityClick={handleCityClick}/>
+                <TextButton text={isSaved? "Unsave": "Save"} onClick={handleSaveClick}/>
+                <TextButton text={"Refresh"} onClick={refreshAll}/>
+                <TextButton text={"Clear history"} onClick={() => setPreviousCitiesData([])}/>
+            </Card>
+        </>
+    )
+
+    const weatherCard = (
+        <>
+            <Card>
+                <MainCard city={currentCityData.city} temperature={currentCityWeather.current?.temperature} temperatureHigher={currentCityWeather.current?.temperatureHigher} temperatureLower={currentCityWeather.current?.temperatureLower} weather={currentCityWeather.current?.weather} icon={currentCityWeather.current?.icon}/>
             </Card>
             <Divider/>
-          </>): null}
-          <Card>
-            <TextButton text={isSaved? "Unsave": "Save"} onClick={handleSaveClick}/>
-            <TextButton text={"Refresh"} onClick={refreshAll}/>
-            <TextButton text={"Clear history"} onClick={() => setPreviousCitiesData([])}/>
-          </Card>
-        </div>
-        <VerticalDivider/>
-        <div>
-          <Card>
-              <MainCard city={currentCityData.city} temperature={currentCityWeather.current?.temperature} temperatureHigher={currentCityWeather.current?.temperatureHigher} temperatureLower={currentCityWeather.current?.temperatureLower} weather={currentCityWeather.current?.weather} icon={currentCityWeather.current?.icon}/>
-          </Card>
+            <Card>
+                <DataCard type={1} currentData={currentCityWeather.current}/>
+            </Card>
             <Divider/>
-          <Card>
-            <DataCard type={1} currentData={currentCityWeather.current}/>
-          </Card>
-          <Divider/>
-          <Card>
-            <HourlyCard hourlyData={currentCityWeather.hourly}/>
-          </Card>
+            <Card>
+                <HourlyCard hourlyData={currentCityWeather.hourly}/>
+            </Card>
 
-          <Divider/>
-          <Card>
-            <DataCard type={2} currentData={currentCityWeather.current}/>
-          </Card>
+            <Divider/>
+            <Card>
+                <DataCard type={2} currentData={currentCityWeather.current}/>
+            </Card>
+        </>
+    )
 
-        </div>
+    const dailyCard = (
+        <>
+            <Card>
+                <DailyCard dailyData={currentCityWeather.daily}/>
+            </Card>
+            <Divider/>
+        </>
+    )
+
+    if (width < 700) { // mobile layout
+        return (
+            <div className={"BaseAppMobile"}>
+                {weatherCard}
+                <Divider/>
+                {dailyCard}
+                {searchCard}
+                {citiesCard}
+                {buttonsCard}
+            </div>
+        )
+    }
+
+    if (width < 1024) {
+        return (
+            <div className={"BaseAppTablet"}>
+                <div>
+                    {weatherCard}
+                    <Divider/>
+
+                    {searchCard}
+                    {buttonsCard}
+                </div>
+                <VerticalDivider/>
+                <div>
+                    {dailyCard}
+                    {citiesCard}
+                </div>
+            </div>
+        )
+    }
+
+    //cities={foundCities}
+    return (
+        <div className={"BaseApp"}>
+            <div>
+                {searchCard}
+                {citiesCard}
+                {buttonsCard}
+            </div>
         <VerticalDivider/>
-        <div>
-          <Card>
-            <DailyCard dailyData={currentCityWeather.daily}/>
-          </Card>
-          <Divider/>
+            <div>
+                {weatherCard}
+            </div>
+        <VerticalDivider/>
+            <div>
+                {dailyCard}
+            </div>
         </div>
-      </div>
   )
 }
 
