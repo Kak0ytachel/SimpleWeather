@@ -26,9 +26,10 @@ import moon_cloudy from './assets/moon_cloudy.avif'
 import sunrise from './assets/sunrise.avif'
 import sunset from './assets/sunset.avif'
 import uv from './assets/uv.avif'
+import rainbow from './assets/rainbow.avif'
 import './Icon.css'
 
-export default function Icon({name, size}) {
+export default function Icon({name, size, className}) {
     let src = (() => {
         switch (name) {
             case "cloud":
@@ -85,6 +86,8 @@ export default function Icon({name, size}) {
                 return sunset;
             case "uv":
                 return uv;
+            case "rainbow":
+                return rainbow;
             default:
                 return na;
         }
@@ -94,6 +97,6 @@ export default function Icon({name, size}) {
     }
 
     return (
-        <img className="Icon" src={src} alt={name} height={size} width={size}></img>
+        <img className={`Icon ${className}`} src={src} alt={name} height={size} width={size}></img>
     );
 }

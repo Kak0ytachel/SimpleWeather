@@ -1,0 +1,23 @@
+.About{
+    /*display: flex;*/
+    align-items: center;
+    gap: 10px;
+}
+
+.AboutText {
+    color: var(--text-color-secondary);
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    vertical-align: super;
+    margin-right: 6px;
+    margin-left: 16px;
+}
+
+.AboutIcon {
+    vertical-align: sub;
+}
+
+.AboutText:visited {
+    color: var(--text-color-secondary);
+}
