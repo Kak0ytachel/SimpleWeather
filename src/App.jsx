@@ -16,6 +16,7 @@ import Divider, {VerticalDivider} from "./Divider.jsx";
 import MainCard from "./MainCard.jsx";
 import {getWeather, search, updateShortWeather} from "./weatherAPI.js"
 import TextButton from "./TextButton.jsx";
+import Placeholder from "./Placeholder.jsx";
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -390,6 +391,14 @@ function App() {
         </>
     )
 
+    const placeholder = (
+        (cityData.length === 0 && previousCitiesData.length === 0 && savedCitiesData.length === 0)? (
+            <Card>
+                <Placeholder/>
+            </Card>
+        ) : null
+    )
+
     if (width < 700) { // mobile layout
         return (
             <div className={"BaseAppMobile"}>
@@ -399,6 +408,7 @@ function App() {
                 {searchCard}
                 {citiesCard}
                 {buttonsCard}
+                {placeholder}
             </div>
         )
     }
@@ -417,6 +427,7 @@ function App() {
                 <div>
                     {dailyCard}
                     {citiesCard}
+                    {placeholder}
                 </div>
             </div>
         )
@@ -429,6 +440,7 @@ function App() {
                 {searchCard}
                 {citiesCard}
                 {buttonsCard}
+                {placeholder}
             </div>
         <VerticalDivider/>
             <div>
