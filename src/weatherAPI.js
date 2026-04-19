@@ -317,8 +317,6 @@ export async function search(name) {
 
     let processedResults = [];
 
-    let latitudes = [];
-    let longitudes = [];
 
     for (let x of requestResult) {
         const cityRecord = {
@@ -329,8 +327,6 @@ export async function search(name) {
             latitude: x.latitude,
             longitude: x.longitude,
         }
-        latitudes.push(x.latitude);
-        longitudes.push(x.longitude);
 
         processedResults.push(cityRecord);
     }
@@ -338,6 +334,21 @@ export async function search(name) {
     // console.log(processedResults);
     // console.log(latitudes);
     // console.log(longitudes);
+    return updateShortWeather(processedResults);
+
+}
+
+export async function updateShortWeather(cities) {
+    if (cities.length === 0) {
+        return [];
+    }
+    let latitudes = [];
+    let longitudes = [];
+
+    for (let x of cities) {
+        latitudes.push(x.latitude);
+        longitudes.push(x.longitude);
+    }
 
     const params = {
         latitude: latitudes,
@@ -358,7 +369,7 @@ export async function search(name) {
         const utcOffsetSeconds = response.utcOffsetSeconds();
         const current = response.current();
 
-        const processedCurrent = processedResults[index++];
+        const processedCurrent = cities[index++];
 
 
 
@@ -373,7 +384,7 @@ export async function search(name) {
         };
         const {weather, icon} = translateWeatherCondition(weatherData.current.weather_code, !weatherData.current.is_day);
         const result = {
-            city: processedCurrent.name,
+            city: processedCurrent.name || processedCurrent.city,
             temperature: formatTemperature(Math.round(weatherData.current.temperature_2m)),
             weather: weather,
             icon: icon,
@@ -381,9 +392,7 @@ export async function search(name) {
             longitude: longitude,
             id: "s" + i++,
         }
-
         results.push(result);
-
     }
     console.log("weatherAPI search ", results);
     return results;

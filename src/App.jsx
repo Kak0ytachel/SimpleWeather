@@ -14,7 +14,7 @@ import DailyElement from "./DailyElement.jsx";
 import DailyCard from "./DailyCard.jsx";
 import Divider, {VerticalDivider} from "./Divider.jsx";
 import MainCard from "./MainCard.jsx";
-import {getWeather, search} from "./weatherAPI.js"
+import {getWeather, search, updateShortWeather} from "./weatherAPI.js"
 import TextButton from "./TextButton.jsx";
 
 function App() {
@@ -138,19 +138,45 @@ function App() {
     //   <section id="spacer"></section>
     // </>
 
-    // const cities = ["Krakow", "Amsterdam", "Warsaw", "Krasnoyarks"]
-    // const [foundCities, setFoundCities] = useState([])
 
-    // const [currentCity, setCurrentCity] = useState("Warsaw, Poland")
+    function getInitialPreviousCityData() { // loads previous cities from cookie
+        return loadCookie("previousCitiesData") || []
+    }
+
+    function getInitialSavedCitiesData() { // loads saved cities from cookie
+        return loadCookie("savedCitiesData") || []
+    }
+
     const [currentCityWeather, setCurrentCityWeather] = useState({})
     const [currentCityData, _setCurrentCityData] = useState(getInitialCityData())
 
     const [cityData, setCityData] = useState([])
     const [citySearchValue, setCitySearchValue] = useState("")
-    const [previousCitiesData, setPreviousCitiesData] = useState(getInitialPreviousCityData())
-    const [savedCitiesData, setSavedCitiesData] = useState(getInitialSavedCitiesData())
+    const [previousCitiesData, setPreviousCitiesData] = useState(() => getInitialPreviousCityData())
+    const [savedCitiesData, setSavedCitiesData] = useState(() => getInitialSavedCitiesData())
 
-    function setCurrentCityData(data) { // updates current and saves previous value
+
+    useEffect(refreshPrevious, [])
+    function refreshPrevious() { // refreshes previous cities weather on load or click on refresh button
+        console.log("update previous called")
+        let f = async () => {
+            const newData = await updateShortWeather(previousCitiesData)
+            setPreviousCitiesData(newData)
+        }
+        f()
+    }
+
+    useEffect(refreshSaved, [])
+    function refreshSaved() { // refreshes saved cities weather on load or click on refresh button
+        console.log("update saved called")
+        let f = async () => {
+            const newData = await updateShortWeather(savedCitiesData)
+            setSavedCitiesData(newData)
+        }
+        f()
+    }
+
+    function setCurrentCityData(data) { // changes current and saves previous value
         const maxSize = 5;
         // console.log("setting current city data", data)
         if (Object.keys(currentCityData).length !== 0) {
@@ -166,18 +192,7 @@ function App() {
         _setCurrentCityData(data)
     }
 
-    // useEffect(() => {console.log('pCD', previousCitiesData)}, [previousCitiesData])
 
-    function saveCookie(name, data) {
-        document.cookie = `${name}=${JSON.stringify(data)}; path=/; max-age=31536000; SameSite=Lax`;
-        // console.log("saved cookie", data)
-    }
-
-    function loadCookie(name) {
-        let result = document.cookie.match(new RegExp(`${name}=([^;]+)`));
-        result && (result = JSON.parse(result[1]))
-        return result;
-    }
 
     useEffect(() => {
         if (currentCityData.longitude && currentCityData.latitude) {
@@ -210,15 +225,6 @@ function App() {
         saveCookie("previousCitiesData", previousCitiesData);
     })
 
-    function getInitialPreviousCityData() {
-        // TODO add updating weather
-        return loadCookie("previousCitiesData") || []
-    }
-
-    function getInitialSavedCitiesData() {
-        // TODO add updating weather
-        return loadCookie("savedCitiesData") || []
-    }
 
     // useEffect(() => {console.log("cityData", cityData)}, [cityData])
     // useEffect(() => {console.log("currentCityData", currentCityData)}, [currentCityData])
@@ -386,4 +392,15 @@ function randomWeather()  {
     const icons = ["sun", "cloud", "rain", "moon_cloudy"];
     const icon = icons.at(Math.floor(Math.random() * icons.length));
     return {weather, icon};
+}
+
+function saveCookie(name, data) {
+    document.cookie = `${name}=${JSON.stringify(data)}; path=/; max-age=31536000; SameSite=Lax`;
+    // console.log("saved cookie", data)
+}
+
+function loadCookie(name) {
+    let result = document.cookie.match(new RegExp(`${name}=([^;]+)`));
+    result && (result = JSON.parse(result[1]))
+    return result;
 }
