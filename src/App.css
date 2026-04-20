@@ -212,6 +212,12 @@
   font-weight: 500;
   caret-animation: manual;
   caret-shape: underscore; /* experimental */
+  background-color: transparent;
+  color: var(--text-color);
+}
+
+.Search::placeholder{
+  color: var(--text-color-secondary);
 }
 
 .Search:focus{
