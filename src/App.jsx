@@ -194,7 +194,7 @@ function App() {
     function setCurrentCityData(data) { // changes current and saves previous value
         const maxSize = 5;
         // console.log("setting current city data", data)
-        if (Object.keys(currentCityData).length !== 0) {
+        if (Object.keys(currentCityData).length !== 0 && currentCityData.id !== "placeholder") {
             if (previousCitiesData.filter((city) => city.longitude === currentCityData.longitude &&
                 city.latitude === currentCityData.latitude).length === 0) {
                 setPreviousCitiesData((prev) => [currentCityData, ...prev].slice(0, maxSize))
@@ -227,7 +227,7 @@ function App() {
             return {
                 city: "Warsaw, Poland",
                 icon: "na",
-                id: "0",
+                id: "placeholder",
                 latitude: 52.2300910949707,
                 longitude: 21.017074584960938,
                 temperature: "+0°",

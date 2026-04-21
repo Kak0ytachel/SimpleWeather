@@ -18,6 +18,10 @@
     vertical-align: sub;
 }
 
+.AboutText:hover {
+    text-decoration: underline;
+}
+
 .AboutText:visited {
     color: var(--text-color-secondary);
 }
