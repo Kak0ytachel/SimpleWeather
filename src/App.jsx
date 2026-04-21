@@ -158,31 +158,41 @@ function App() {
     const [currentCityWeather, setCurrentCityWeather] = useState({})
     const [currentCityData, _setCurrentCityData] = useState(getInitialCityData())
 
-    const [cityData, setCityData] = useState([])
-    const [citySearchValue, setCitySearchValue] = useState("")
+    const [cityData, setCityData] = useState([]) // search
+    const [citySearchValue, setCitySearchValue] = useState("") // search text value
     const [previousCitiesData, setPreviousCitiesData] = useState(() => getInitialPreviousCityData())
     const [savedCitiesData, setSavedCitiesData] = useState(() => getInitialSavedCitiesData())
 
 
     useEffect(refreshPrevious, [])
     function refreshPrevious() { // refreshes previous cities weather on load or click on refresh button
-        console.log("update previous called")
+        console.log("update previous called");
         let f = async () => {
-            const newData = await updateShortWeather(previousCitiesData)
-            setPreviousCitiesData(newData)
+            const newData = await updateShortWeather(previousCitiesData);
+            setPreviousCitiesData(newData);
         }
-        f()
+        f();
     }
 
     useEffect(refreshSaved, [])
     function refreshSaved() { // refreshes saved cities weather on load or click on refresh button
-        console.log("update saved called")
+        console.log("update saved called");
         let f = async () => {
-            const newData = await updateShortWeather(savedCitiesData)
-            setSavedCitiesData(newData)
+            const newData = await updateShortWeather(savedCitiesData);
+            setSavedCitiesData(newData);
         }
-        f()
+        f();
     }
+
+    // useEffect(refreshCurrent, [])
+    // function refreshCurrent() {
+    //     console.log("update current called");
+    //     let f = async () => {
+    //         const newData = await updateShortWeather([currentCityData]);
+    //         setCurrentCityData(newData);
+    //     }
+    //     f();
+    // }
 
     function refreshAll() {
         setCurrentCityWeather((prevState) => {prevState.current.icon = "na"; return prevState;})
@@ -304,11 +314,19 @@ function App() {
         // console.log(foundCities)\
     }
 
-    function handleSaveClick() {
+    async function handleSaveClick() {
         console.log("save clicked", savedCitiesData)
         if (savedCitiesData.filter((city) => city.longitude === currentCityData.longitude &&
             city.latitude === currentCityData.latitude).length === 0) {
-            setSavedCitiesData((prev) => [currentCityData, ...prev])
+            if (currentCityData.id === "placeholder") {
+                let newCurrent = await updateShortWeather([currentCityData]);
+                // console.log("prev", currentCityData)
+                // console.log("newCurrent", newCurrent)
+                setSavedCitiesData((prev) => [newCurrent[0], ...prev])
+            } else {
+                setSavedCitiesData((prev) => [currentCityData, ...prev])
+            }
+
         } else {
             setSavedCitiesData((prev) => [...(prev.filter((city) => city.longitude !== currentCityData.longitude ||
                 city.latitude !== currentCityData.latitude))])
@@ -347,6 +365,7 @@ function App() {
                 <Card>
                     <CityCard citiesData={savedCitiesData} onCityClick={handleCityClick}/>
                 </Card>
+                <Divider/>
             </>): null}
         </>
     )
@@ -436,7 +455,7 @@ function App() {
                     {dailyCard}
                     {citiesCard}
                     {placeholder}
-                    <Divider/>
+                    {(!placeholder)? null : (<Divider/>)}
                     {aboutCard}
                 </div>
             </div>
